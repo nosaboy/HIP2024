@@ -5,5 +5,3 @@ sus
 AI trained by pytorch??? wow!!
 
 Matplotlib !!!!????
-
-![image](murder.png)

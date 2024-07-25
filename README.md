@@ -2,7 +2,7 @@
 sus
 
 # Details ig
-AI trained by pytorch???
+AI trained by pytorch??? wow!!
 
 Matplotlib !!!!????
 

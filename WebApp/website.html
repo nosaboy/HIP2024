@@ -4,39 +4,34 @@
     <meta charset="UTF-8">
     <title>This is our amazing website on machine learning.</title>
     <style>
-        #container {
-            margin: 0px auto;
-            width: 500px;
-            height: 375px;
-            border: 10px #333 solid;
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
         }
 
-        #videoElement {
-            width: 500px;
-            height: 375px;
-            background-color: #666;
-            transform: scaleX(-1);
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            width: 100vw; /* Full viewport width */
+            box-sizing: border-box;
+        }
+
+        iframe {
+            width: 80%; /* Adjust width as needed */
+            height: 80%; /* Adjust height as needed */
+            border: none;
+            transform: scaleX(-1); /* Flip horizontally */
         }
     </style>
 </head>
 <body>
     <p>Blah blah blah heart rate blah blah</p>
     <div id="container">
-        <video autoplay="true" id="videoElement">
-        </video>
+        <iframe src="http://127.0.0.1:5000/video_feed" frameborder="0" allowfullscreen></iframe>
     </div>
-    <script>
-        var video = document.querySelector("#videoElement");
-
-        if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    video.srcObject = stream;
-                })
-                .catch(function (err0r) {
-                    console.log("Something went wrong!");
-                });
-        }
-    </script>
 </body>
 </html>

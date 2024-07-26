@@ -27,11 +27,18 @@
             transform: scaleX(-1); /* Flip horizontally */
         }
     </style>
+    <script>
+        function startAppPy() {
+            alert("startAppPy is loaded");
+
+        }
+    </script>
+
 </head>
-<body>
-    <p>Heart rate: </p>
-    <div id="container">
-        <iframe src="http://127.0.0.1:5000/video_feed" frameborder="0" allowfullscreen></iframe>
-    </div>
-</body>
+<body onload="startAppPy()">
+        <p>Heart rate: </p>
+        <div id="container">
+            <iframe src="http://127.0.0.1:5000/video_feed" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </body>
 </html>

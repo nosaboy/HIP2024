@@ -3,6 +3,8 @@ import flask
 import torch
 from torch import nn
 import cv2
+import matplotlib
+from matplotlib import pyplot as plt
 class NeuralNetwork(nn.Module):
     def __init__(self):
         super().__init__()
@@ -36,6 +38,7 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 cap = cv2.VideoCapture(0)
 
 def generate_frames():
+    cv2.namedWindow("bob",cv2.WINDOW_NORMAL)
     while True:
         # Read a frame from the webcam
         success, frame = cap.read()
@@ -47,11 +50,21 @@ def generate_frames():
 
         # Detect faces
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+        #assuming only one face cause that's what the program seems to be doing
+        if len(faces)>0:
+            croppedFace = None
+            # Draw bounding boxes around the faces
+            for (x, y, w, h) in faces:
 
-        # Draw bounding boxes around the faces
-        for (x, y, w, h) in faces:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+                croppedFace = frame[y:y+h, x:x+h]
+            croppedFace = cv2.cvtColor(croppedFace,cv2.COLOR_BGR2RGB)
+            heartRate = 0
+            #heartRate = model(croppedFace)
+            cv2.putText(frame,f"Heart Rate: {heartRate}",(50,50),cv2.FONT_ITALIC,1,(0,0,0),cv2.LINE_4)
+        else:
+            cv2.putText(frame,f"Theres no face ( ._.)",(50,50),cv2.FONT_ITALIC,1,(0,0,0),cv2.LINE_4)
+        # will probably use putText to display the heartrate I dont want to figure out how to update the html file without reloading the page
         # Encode the frame in JPEG format
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
@@ -62,11 +75,13 @@ def generate_frames():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',heartRate=0)
 
 @app.route('/video_feed')
 def video_feed():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

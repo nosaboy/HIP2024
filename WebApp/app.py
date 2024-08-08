@@ -54,18 +54,18 @@ def generate_frames():
         if len(faces)>0:
             croppedFace = None
             # Draw bounding boxes around the faces
-            for (x, y, w, h) in faces:
-
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-                croppedFace = frame[y:y+h, x:x+h]
+            x,y,w,h = faces[0] # get dimensions of face box
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+            croppedFace = frame[y:y+h, x:x+h]
             croppedFace = cv2.cvtColor(croppedFace,cv2.COLOR_BGR2RGB)
+
             heartRate = 0
             #heartRate = model(croppedFace)
             frame = cv2.flip(frame,1) # flip horizontally
-            cv2.putText(frame,f"Heart Rate: {heartRate}",(50,50),cv2.FONT_ITALIC,1,(0,0,0),cv2.LINE_4)
+            cv2.putText(frame,f"Heart Rate: {heartRate}",(len(frame[0])-x-w-3,y-4),cv2.FONT_ITALIC,0.4,(0,0,0),1)
         else:
             frame = cv2.flip(frame, 1)  # flip horizontally
-            cv2.putText(frame,f"Theres no face ( ._.)",(50,50),cv2.FONT_ITALIC,1,(0,0,0),cv2.LINE_4)
+            cv2.putText(frame,f"Theres no face ( ._.)",(50,50),cv2.FONT_ITALIC,1,(0,0,0),2)
         # will probably use putText to display the heartrate I dont want to figure out how to update the html file without reloading the page
         # Encode the frame in JPEG format
         ret, buffer = cv2.imencode('.jpg', frame)

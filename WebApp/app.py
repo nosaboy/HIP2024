@@ -1,7 +1,33 @@
 from flask import Flask, Response, render_template
+import flask
+import torch
+from torch import nn
 import cv2
+class NeuralNetwork(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.flatten = nn.Flatten()
+        self.linearStack = nn.Sequential(nn.Linear(784,512),nn.ReLU(),nn.Linear(512,512),nn.ReLU(),nn.Linear(512,10))
 
+    def forward(self,x):
+        x = self.flatten(x)
+        logits = self.linearStack(x)
+        return logits
+
+modelPath = "model.pth" # add one when we have a model
 app = Flask(__name__)
+
+device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps"
+    if torch.backends.mps.is_available()
+    else "cpu"
+)
+count = 0
+model = NeuralNetwork().to(device)
+model.load_state_dict(torch.load(modelPath))
+model.eval()
 
 # Load the pre-trained Haar Cascade classifier for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')

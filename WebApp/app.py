@@ -61,8 +61,10 @@ def generate_frames():
             croppedFace = cv2.cvtColor(croppedFace,cv2.COLOR_BGR2RGB)
             heartRate = 0
             #heartRate = model(croppedFace)
+            frame = cv2.flip(frame,1) # flip horizontally
             cv2.putText(frame,f"Heart Rate: {heartRate}",(50,50),cv2.FONT_ITALIC,1,(0,0,0),cv2.LINE_4)
         else:
+            frame = cv2.flip(frame, 1)  # flip horizontally
             cv2.putText(frame,f"Theres no face ( ._.)",(50,50),cv2.FONT_ITALIC,1,(0,0,0),cv2.LINE_4)
         # will probably use putText to display the heartrate I dont want to figure out how to update the html file without reloading the page
         # Encode the frame in JPEG format

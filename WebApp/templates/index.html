@@ -8,7 +8,7 @@
             margin: 0px auto;
             width: 500px;
             height: 375px;
-            border: 10px #333 solid;
+            border: 10px blue solid;
         }
 
         #videoElement {
@@ -23,6 +23,7 @@
     <div id="container">
         <img id="videoElement" src="{{ url_for('video_feed') }}" alt="Video feed">
     </div>
+    is there a face? {{heartRate}}
     <script>
         const videoElement = document.getElementById('videoElement');
         videoElement.addEventListener('load', () => {
